@@ -83,15 +83,16 @@ class NotificationReportMode extends ReportMode {
   /// mode, only notification report mode from second catcher options will be
   /// initialized correctly. That's why init is delayed.
   void _initializeNotificationsPlugin() {
-    _flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid = new AndroidInitializationSettings(icon);
-    var initializationSettingsIOS = new IOSInitializationSettings();
-    var initializationSettings = new InitializationSettings(
+    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    final initializationSettingsAndroid = AndroidInitializationSettings(icon);
+    final initializationSettingsIOS = DarwinInitializationSettings();
+    final initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectedNotification);
+    _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
   }
 
   @override
@@ -106,13 +107,13 @@ class NotificationReportMode extends ReportMode {
   }
 
   void _sendNotification() async {
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
         channelId, channelName,
         channelDescription: channelDescription,
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority);
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    var platformChannelSpecifics = new NotificationDetails(
+    final iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+    final platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
 

@@ -309,10 +309,14 @@ class Catcher with ReportModeAction {
       _deviceParameters["arch"] = macOsDeviceInfo.arch;
       _deviceParameters["model"] = macOsDeviceInfo.model;
       _deviceParameters["kernelVersion"] = macOsDeviceInfo.kernelVersion;
+      _deviceParameters['majorVersion'] = macOsDeviceInfo.majorVersion;
+      _deviceParameters['minorVersion'] = macOsDeviceInfo.minorVersion;
+      _deviceParameters['patchVersion'] = macOsDeviceInfo.patchVersion;
       _deviceParameters["osRelease"] = macOsDeviceInfo.osRelease;
       _deviceParameters["activeCPUs"] = macOsDeviceInfo.activeCPUs;
       _deviceParameters["memorySize"] = macOsDeviceInfo.memorySize;
       _deviceParameters["cpuFrequency"] = macOsDeviceInfo.cpuFrequency;
+      _deviceParameters['systemGUID'] = macOsDeviceInfo.systemGUID;
     } catch (exception) {
       _logger.warning("Load MacOS parameters failed: $exception");
     }
@@ -324,6 +328,30 @@ class Catcher with ReportModeAction {
       _deviceParameters["numberOfCores"] = windowsDeviceInfo.numberOfCores;
       _deviceParameters["systemMemoryInMegabytes"] =
           windowsDeviceInfo.systemMemoryInMegabytes;
+      _deviceParameters['majorVersion'] = windowsDeviceInfo.majorVersion;
+      _deviceParameters['minorVersion'] = windowsDeviceInfo.minorVersion;
+      _deviceParameters['buildNumber'] = windowsDeviceInfo.buildNumber;
+      _deviceParameters['platformId'] = windowsDeviceInfo.platformId;
+      _deviceParameters['csdVersion'] = windowsDeviceInfo.csdVersion;
+      _deviceParameters['servicePackMajor'] =
+          windowsDeviceInfo.servicePackMajor;
+      _deviceParameters['servicePackMinor'] =
+          windowsDeviceInfo.servicePackMinor;
+      _deviceParameters['suitMask'] = windowsDeviceInfo.suitMask;
+      _deviceParameters['productType'] = windowsDeviceInfo.productType;
+      _deviceParameters['reserved'] = windowsDeviceInfo.reserved;
+      _deviceParameters['buildLab'] = windowsDeviceInfo.buildLab;
+      _deviceParameters['buildLabEx'] = windowsDeviceInfo.buildLabEx;
+      _deviceParameters['digitalProductId'] =
+          windowsDeviceInfo.digitalProductId;
+      _deviceParameters['displayVersion'] = windowsDeviceInfo.displayVersion;
+      _deviceParameters['editionId'] = windowsDeviceInfo.editionId;
+      _deviceParameters['installDate'] = windowsDeviceInfo.installDate;
+      _deviceParameters['productId'] = windowsDeviceInfo.productId;
+      _deviceParameters['productName'] = windowsDeviceInfo.productName;
+      _deviceParameters['registeredOwner'] = windowsDeviceInfo.registeredOwner;
+      _deviceParameters['releaseId'] = windowsDeviceInfo.releaseId;
+      _deviceParameters['deviceId'] = windowsDeviceInfo.deviceId;
     } catch (exception) {
       _logger.warning("Load Windows parameters failed: $exception");
     }
@@ -355,7 +383,7 @@ class Catcher with ReportModeAction {
   void _loadAndroidParameters(AndroidDeviceInfo androidDeviceInfo) {
     try {
       _deviceParameters["id"] = androidDeviceInfo.id;
-      // TODO(*): _deviceParameters["androidId"] = androidDeviceInfo.androidId;
+      _deviceParameters["androidId"] = androidDeviceInfo.id;
       _deviceParameters["board"] = androidDeviceInfo.board;
       _deviceParameters["bootloader"] = androidDeviceInfo.bootloader;
       _deviceParameters["brand"] = androidDeviceInfo.brand;
@@ -371,16 +399,36 @@ class Catcher with ReportModeAction {
       _deviceParameters["product"] = androidDeviceInfo.product;
       _deviceParameters["tags"] = androidDeviceInfo.tags;
       _deviceParameters["type"] = androidDeviceInfo.type;
+      _deviceParameters['supported32BitAbis'] =
+          androidDeviceInfo.supported32BitAbis;
+      _deviceParameters['supported64BitAbis'] =
+          androidDeviceInfo.supported64BitAbis;
+      _deviceParameters['supportedAbis'] = androidDeviceInfo.supportedAbis;
       _deviceParameters["versionBaseOs"] = androidDeviceInfo.version.baseOS;
       _deviceParameters["versionCodename"] = androidDeviceInfo.version.codename;
       _deviceParameters["versionIncremental"] =
           androidDeviceInfo.version.incremental;
-      _deviceParameters["versionPreviewSdk"] =
+      _deviceParameters["versionPreviewSdkInt"] =
           androidDeviceInfo.version.previewSdkInt;
       _deviceParameters["versionRelease"] = androidDeviceInfo.version.release;
-      _deviceParameters["versionSdk"] = androidDeviceInfo.version.sdkInt;
+      _deviceParameters["versionSdkInt"] = androidDeviceInfo.version.sdkInt;
       _deviceParameters["versionSecurityPatch"] =
           androidDeviceInfo.version.securityPatch;
+      _deviceParameters['systemFeatures'] = androidDeviceInfo.systemFeatures;
+      _deviceParameters['displaySizeInches'] =
+          ((androidDeviceInfo.displayMetrics.sizeInches * 10).roundToDouble() /
+              10);
+      _deviceParameters['displayWidthPixels'] =
+          androidDeviceInfo.displayMetrics.widthPx;
+      _deviceParameters['displayWidthInches'] =
+          androidDeviceInfo.displayMetrics.widthInches;
+      _deviceParameters['displayHeightPixels'] =
+          androidDeviceInfo.displayMetrics.heightPx;
+      _deviceParameters['displayHeightInches'] =
+          androidDeviceInfo.displayMetrics.heightInches;
+      _deviceParameters['displayXDpi'] = androidDeviceInfo.displayMetrics.xDpi;
+      _deviceParameters['displayYDpi'] = androidDeviceInfo.displayMetrics.yDpi;
+      _deviceParameters['serialNumber'] = androidDeviceInfo.serialNumber;
     } catch (exception) {
       _logger.warning("Load Android parameters failed: $exception");
     }
@@ -394,6 +442,7 @@ class Catcher with ReportModeAction {
       _deviceParameters["identifierForVendor"] = iosInfo.identifierForVendor;
       _deviceParameters["localizedModel"] = iosInfo.localizedModel;
       _deviceParameters["systemName"] = iosInfo.systemName;
+      _deviceParameters['systemVersion'] = iosInfo.systemVersion;
       _deviceParameters["utsnameVersion"] = iosInfo.utsname.version;
       _deviceParameters["utsnameRelease"] = iosInfo.utsname.release;
       _deviceParameters["utsnameMachine"] = iosInfo.utsname.machine;
@@ -648,6 +697,7 @@ class Catcher with ReportModeAction {
       _logger.warning(
         "Error occurred in ${reportHandler.toString()}: ${handlerError.toString()}",
       );
+      return true;
     }).then((result) {
       _logger.info("${report.runtimeType} result: $result");
       if (!result) {
