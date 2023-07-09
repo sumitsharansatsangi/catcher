@@ -81,8 +81,8 @@ class Catcher implements ReportModeAction {
     _setupCurrentConfig();
     _configureLogger();
     _setupErrorHooks();
-    _setupReportModeActionInReportMode();
     _setupScreenshotManager();
+    _setupReportModeActionInReportMode();
 
     _loadDeviceInfo();
     _loadApplicationInfo();
@@ -153,8 +153,8 @@ class Catcher implements ReportModeAction {
       this.releaseConfig = releaseConfig;
     }
     _setupCurrentConfig();
-    _setupReportModeActionInReportMode();
     _setupScreenshotManager();
+    _setupReportModeActionInReportMode();
     _configureLogger();
     _localizationOptions = null;
   }
