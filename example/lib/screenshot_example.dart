@@ -9,6 +9,7 @@ void main() async {
   Directory? externalDir;
   if (Platform.isAndroid) {
     externalDir = await getExternalStorageDirectory();
+    debugPrint(externalDir!.path);
   }
   if (Platform.isIOS || Platform.isMacOS) {
     externalDir = await getApplicationDocumentsDirectory();
@@ -16,6 +17,7 @@ void main() async {
   String path = "";
   if (externalDir != null) {
     path = externalDir.path.toString();
+     debugPrint(path);
   }
 
   CatcherOptions debugOptions = CatcherOptions(
