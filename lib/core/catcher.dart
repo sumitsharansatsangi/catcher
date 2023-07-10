@@ -187,7 +187,10 @@ class Catcher implements ReportModeAction {
     FlutterError.onError = (FlutterErrorDetails details) async {
       _reportError(details.exception, details.stack, errorDetails: details);
     };
-
+ PlatformDispatcher.instance.onError = (error, stack) {
+      _reportError(error, stack);
+      return true;
+    };
     ///Web doesn't have Isolate error listener support
     if (!ApplicationProfileManager.isWeb()) {
       Isolate.current.addErrorListener(
@@ -202,29 +205,38 @@ class Catcher implements ReportModeAction {
     }
 
     if (rootWidget != null) {
-      _runZonedGuarded(() {
-        runApp(rootWidget!);
-      });
+      // _runZonedGuarded(() {
+      //   runApp(rootWidget!);
+      // });
+      _initWidgetsBinding();
+      runApp(rootWidget!);
     } else if (runAppFunction != null) {
-      _runZonedGuarded(() {
-        runAppFunction!();
-      });
+      // _runZonedGuarded(() {
+      //   runAppFunction!();
+      // });
+       _initWidgetsBinding();
+      runAppFunction!();
     } else {
       throw ArgumentError("Provide rootWidget or runAppFunction to Catcher.");
     }
   }
 
-  void _runZonedGuarded(void Function() callback) {
-    runZonedGuarded<Future<void>>(() async {
-      if (ensureInitialized) {
-        WidgetsFlutterBinding.ensureInitialized();
-      }
-      callback();
-    }, (dynamic error, StackTrace stackTrace) {
-      _reportError(error, stackTrace);
-    });
-  }
+  // void _runZonedGuarded(void Function() callback) {
+  //   runZonedGuarded<Future<void>>(() async {
+  //     if (ensureInitialized) {
+  //       WidgetsFlutterBinding.ensureInitialized();
+  //     }
+  //     callback();
+  //   }, (dynamic error, StackTrace stackTrace) {
+  //     _reportError(error, stackTrace);
+  //   });
+  // }
 
+    void _initWidgetsBinding() {
+    if (ensureInitialized) {
+      WidgetsFlutterBinding.ensureInitialized();
+    }
+    }
   void _configureLogger() {
     if (_currentConfig.logger != null) {
       _logger = _currentConfig.logger!;
