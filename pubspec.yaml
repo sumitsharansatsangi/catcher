@@ -6,8 +6,8 @@ publish_to: none
 homepage: https://github.com/jhomlala/catcher
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
-  flutter: ">=3.0.0"
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: ">=3.13.0"
 
 dependencies:
   flutter:
@@ -15,15 +15,19 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   flutter_styled_toast: ^2.2.1
-  device_info_plus: ^9.0.3
-  device_info_plus_platform_interface: ^7.0.0
-  package_info_plus: ^4.0.2
+  device_info_plus:
+    git: https://github.com/kumsumit/device_info_plus.git
+  device_info_plus_platform_interface:
+    git: https://github.com/kumsumit/device_info_plus_platform_interface.git
+  package_info_plus: 
+    git:  https://github.com/kumsumit/package_info_plus.git
   mailer: ^6.0.1
   dio: ^5.3.2
-  flutter_mailer: ^2.1.1
+  flutter_mailer: 
+    git: https://github.com/kumsumit/flutter_mailer.git
   logging: ^1.2.0
   sentry: 
-    git: https://github.com/kumsumit/sentry
+    git: https://github.com/kumsumit/sentry.git
   universal_io: ^2.2.2
 
 dev_dependencies:
