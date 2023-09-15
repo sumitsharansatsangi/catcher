@@ -18,18 +18,22 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  path_provider: ^2.0.15
-  path_provider_foundation: ^2.2.3
+  path_provider: 
+    git: https://github.com/kumsumit/path_provider.git
+  path_provider_foundation: 
+    git: https://github.com/kumsumit/path_provider_foundation.git
   dio: ^5.2.1+1
-  permission_handler: ^10.4.1
-  flutter_local_notifications: ^15.0.1
+  permission_handler: 
+    git: https://github.com/kumsumit/permission_handler.git
+  flutter_local_notifications: 
+    git: https://github.com/kumsumit/flutter_local_notifications.git
 
 
   # The following adds the Cupertino Icons font to your application.

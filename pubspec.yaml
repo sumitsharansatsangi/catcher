@@ -14,7 +14,8 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  flutter_styled_toast: ^2.2.1
+  flutter_styled_toast: 
+    git: https://github.com/sumitsharansatsangi/flutter_styled_toast.git
   device_info_plus:
     git: https://github.com/kumsumit/device_info_plus.git
   device_info_plus_platform_interface:
