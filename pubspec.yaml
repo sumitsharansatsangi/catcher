@@ -1,9 +1,17 @@
 name: catcher
 description: Plugin for error catching which provides multiple handlers for dealing with errors when they are not caught by the developer.
-version: 0.7.0
+version: 0.8.0
 publish_to: none
 #author: Jakub Homlala <jhomlala@gmail.com>
 homepage: https://github.com/jhomlala/catcher
+repository: https://github.com/jhomlala/catcher
+issue_tracker: https://github.com/jhomlala/catcher/issues
+topics:
+  - error
+  - errors
+  - logs
+  - devtools
+  - tool
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -30,6 +38,7 @@ dependencies:
   sentry: 
     git: https://github.com/kumsumit/sentry.git
   universal_io: ^2.2.2
+  very_good_analysis: ^5.1.0
 
 dev_dependencies:
   lints: ^3.0.0

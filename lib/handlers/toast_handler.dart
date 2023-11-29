@@ -1,8 +1,8 @@
 import 'package:catcher/model/platform_type.dart';
 import 'package:catcher/model/report.dart';
 import 'package:catcher/model/report_handler.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 class ToastHandler extends ReportHandler {
   final StyledToastPosition position;
@@ -36,7 +36,7 @@ class ToastHandler extends ReportHandler {
     showToast(_getErrorMessage(error),
         backgroundColor: backgroundColor,
         textStyle: TextStyle(color: textColor, fontSize: textSize),
-        position: position);
+        position: position,);
 
     return true;
   }
@@ -45,7 +45,7 @@ class ToastHandler extends ReportHandler {
     if (customMessage?.isNotEmpty == true) {
       return customMessage!;
     } else {
-      return "${localizationOptions.toastHandlerDescription} ${error.error}";
+      return '${localizationOptions.toastHandlerDescription} ${error.error}';
     }
   }
 }

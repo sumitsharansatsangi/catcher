@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.1.0 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -29,23 +29,24 @@ dependencies:
     git: https://github.com/kumsumit/path_provider.git
   path_provider_foundation: 
     git: https://github.com/kumsumit/path_provider_foundation.git
-  dio: ^5.2.1+1
+  dio: ^5.3.4
   permission_handler: 
     git: https://github.com/kumsumit/permission_handler.git
   flutter_local_notifications: 
     git: https://github.com/kumsumit/flutter_local_notifications.git
-
+  sentry: 
+    git: https://github.com/kumsumit/sentry.git
+  catcher:
+    path: ../
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
-  flutter_lints: ^2.0.3
+  flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
-  catcher:
-    path: ../
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
