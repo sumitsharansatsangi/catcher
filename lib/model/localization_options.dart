@@ -26,14 +26,14 @@ class LocalizationOptions {
         'Unexpected error occurred in application. Error report is ready to'
             ' send to support team. Please click Accept to send error report '
             'or Cancel to dismiss report.',
-    this.dialogReportModeAccept = 'Accept',
+    this.dialogReportModeAccept = 'Send',
     this.dialogReportModeCancel = 'Cancel',
     this.pageReportModeTitle = 'Crash',
     this.pageReportModeDescription =
         'Unexpected error occurred in application. Error report is ready to'
             ' send to support team. Please click Accept to send error report '
             'or Cancel to dismiss report.',
-    this.pageReportModeAccept = 'Accept',
+    this.pageReportModeAccept = 'Send',
     this.pageReportModeCancel = 'Cancel',
     this.toastHandlerDescription = 'Error occurred:',
     this.snackbarHandlerDescription = 'Error occurred:',
@@ -98,9 +98,9 @@ class LocalizationOptions {
       dialogReportModeDescription:
           'एप्लिकेशन में अप्रत्याशित त्रुटि हुई। त्रुटि रिपोर्ट समर्थन टीम को '
           'भेजने के लिए तैयार है। कृपया त्रुटि रिपोर्ट भेजने के लिए '
-          'स्वीकार करें या रिपोर्ट को रद्द करने के लिए रद्द करें पर क्लिक '
+          'भेजें या रिपोर्ट को रद्द करने के लिए रद्द करें पर क्लिक '
           'करें।',
-      dialogReportModeAccept: 'स्वीकार करें',
+      dialogReportModeAccept: 'भेजें',
       dialogReportModeCancel: 'रद्द करें',
       pageReportModeTitle: 'दुर्घटना',
       pageReportModeDescription:
@@ -108,7 +108,7 @@ class LocalizationOptions {
           'भेजने के लिए तैयार है। कृपया त्रुटि रिपोर्ट भेजने के लिए '
           'स्वीकार करें या रिपोर्ट को रद्द करने के लिए रद्द करें पर क्लिक '
           'करें।',
-      pageReportModeAccept: 'स्वीकार करें',
+      pageReportModeAccept: 'भेजें',
       pageReportModeCancel: 'रद्द करें',
       toastHandlerDescription: 'त्रुटि हुई:',
       snackbarHandlerDescription: 'त्रुटि हुई:',
@@ -172,23 +172,23 @@ class LocalizationOptions {
   static LocalizationOptions buildDefaultRussianOptions() {
     return LocalizationOptions(
       'ru',
-      notificationReportModeTitle: 'Произошла ошибка приложения',
+      notificationReportModeTitle: 'В приложении произошла ошибка',
       notificationReportModeContent:
           'Нажмите здесь, чтобы отправить отчет об ошибке в службу поддержки.',
-      dialogReportModeTitle: 'авария',
+      dialogReportModeTitle: 'Сбой',
       dialogReportModeDescription:
           'В приложении произошла непредвиденная ошибка. Отчет об ошибке готов '
           'к отправке в службу поддержки. Пожалуйста, нажмите Принять, чтобы '
           'отправить отчет об ошибке или Отмена, чтобы закрыть отчет.',
-      dialogReportModeAccept: 'принимать',
-      dialogReportModeCancel: 'отменить',
-      pageReportModeTitle: 'авария',
+      dialogReportModeAccept: 'Принять',
+      dialogReportModeCancel: 'Отмена',
+      pageReportModeTitle: 'Сбой',
       pageReportModeDescription:
           'В приложении произошла непредвиденная ошибка. Отчет об ошибке готов '
           'к отправке в службу поддержки. Пожалуйста, нажмите Принять, чтобы '
           'отправить отчет об ошибке или Отмена, чтобы закрыть отчет.',
-      pageReportModeAccept: 'принимать',
-      pageReportModeCancel: 'отменить',
+      pageReportModeAccept: 'Принять',
+      pageReportModeCancel: 'Отмена',
       toastHandlerDescription: 'Произошла ошибка:',
       snackbarHandlerDescription: 'Произошла ошибка:',
     );
