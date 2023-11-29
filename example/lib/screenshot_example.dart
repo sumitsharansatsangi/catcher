@@ -14,26 +14,39 @@ void main() async {
   if (Platform.isIOS || Platform.isMacOS) {
     externalDir = await getApplicationDocumentsDirectory();
   }
+  if(Platform.isLinux || Platform.isWindows){
+    externalDir = await getDownloadsDirectory();
+  }
   var path = '';
   if (externalDir != null) {
     path = externalDir.path;
-     debugPrint(path);
+    debugPrint(path);
+  }else{
+    debugPrint("Screenshot won't work , sorry");
   }
 
   final debugOptions = CatcherOptions(
     DialogReportMode(),
-    [
-      EmailManualHandler(
-        ['email1@email.com', 'email2@email.com'],
-        emailTitle: 'Sample Title',
-        emailHeader: 'Sample Header',
-        printLogs: true,
-      ),
+    [ HttpHandler(
+    HttpRequestType.post,
+     Uri.parse("https://kumpali.com/report/"),
+    printLogs: true,
+    // enableCustomParameters: true,
+    enableStackTrace: true,
+    enableApplicationParameters: true,
+    enableDeviceParameters: true,
+  )
+      // EmailManualHandler(
+      //   ['email1@email.com', 'email2@email.com'],
+      //   emailTitle: 'Sample Title',
+      //   emailHeader: 'Sample Header',
+      //   printLogs: true,
+      // ),
     ],
-    customParameters: <String, dynamic>{
-      'Test': 'Test12345',
-      'Test2': 'Test54321',
-    },
+    // customParameters: <String, dynamic>{
+    //   'Test': 'Test12345',
+    //   'Test2': 'Test54321',
+    // },
     screenshotsPath: path,
   );
 
