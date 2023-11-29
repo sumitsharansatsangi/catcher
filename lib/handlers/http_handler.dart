@@ -90,8 +90,8 @@ class HttpHandler extends ReportHandler {
         );
       }
       _printLog(
-        'HttpHandler response status: ${response.statusCode!} body:'
-        ' ${response.data!}',
+        'HttpHandler response status: ${response.statusCode} body:'
+        ' ${response.data}',
       );
       return true;
     } catch (error, stackTrace) {
