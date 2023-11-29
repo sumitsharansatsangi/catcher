@@ -66,10 +66,11 @@ class PageWidget extends StatefulWidget {
 class PageWidgetState extends State<PageWidget> {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        widget.pageReportMode.onActionRejected(widget.report);
-        return true;
+    return PopScope(
+      onPopInvoked: (value) async {
+        if (value) {
+          widget.pageReportMode.onActionRejected(widget.report);
+        }
       },
       child: Builder(
         builder: (context) => CatcherUtils.isCupertinoAppAncestor(context)

@@ -81,9 +81,9 @@ class ChildWidget extends StatelessWidget {
 
   Future<void> checkPermissions() async {
     final status = await Permission.storage.status;
-    print('Status: $status');
+    debugPrint('Status: $status');
     if (!status.isGranted) {
-      print('Requested');
+      debugPrint('Requested');
     }
   }
 

@@ -14,7 +14,7 @@ void main() {
       action: SnackBarAction(
         label: 'Button',
         onPressed: () {
-          print('Click!');
+          debugPrint('Click!');
         },
       ),
       textStyle: const TextStyle(

@@ -226,18 +226,6 @@ class Catcher implements ReportModeAction {
     }
   }
 
-  void _runZonedGuarded(void Function() callback) {
-    runZonedGuarded<Future<void>>(
-      () async {
-        if (ensureInitialized) {
-          WidgetsFlutterBinding.ensureInitialized();
-        }
-        callback();
-      },
-      _reportError,
-    );
-  }
-
     void _initWidgetsBinding() {
     if (ensureInitialized) {
       WidgetsFlutterBinding.ensureInitialized();

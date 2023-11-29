@@ -70,21 +70,21 @@ class ChildWidget extends StatelessWidget {
 class CustomCatcherLogger extends CatcherLogger {
   @override
   void info(String message) {
-    print('Custom Catcher Logger | Info | $message');
+    debugPrint('Custom Catcher Logger | Info | $message');
   }
 
   @override
   void fine(String message) {
-    print('Custom Catcher Logger | Fine | $message');
+    debugPrint('Custom Catcher Logger | Fine | $message');
   }
 
   @override
   void warning(String message) {
-    print('Custom Catcher Logger | Warning | $message');
+    debugPrint('Custom Catcher Logger | Warning | $message');
   }
 
   @override
   void severe(String message) {
-    print('Custom Catcher Logger | Servere | $message');
+    debugPrint('Custom Catcher Logger | Servere | $message');
   }
 }

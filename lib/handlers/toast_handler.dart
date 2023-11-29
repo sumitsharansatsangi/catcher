@@ -32,8 +32,8 @@ class ToastHandler extends ReportHandler {
       ];
 
   @override
-  Future<bool> handle(Report error, BuildContext? context) async {
-    showToast(_getErrorMessage(error),
+  Future<bool> handle(Report report, BuildContext? context) async {
+    showToast(_getErrorMessage(report),
         backgroundColor: backgroundColor,
         textStyle: TextStyle(color: textColor, fontSize: textSize),
         position: position,);
