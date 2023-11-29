@@ -96,20 +96,20 @@ class LocalizationOptions {
           'समर्थन टीम को त्रुटि रिपोर्ट भेजने के लिए यहां क्लिक करें।.',
       dialogReportModeTitle: 'दुर्घटना',
       dialogReportModeDescription:
-          'आवेदन में अप्रत्याशित त्रुटि हुई। त्रुटि रिपोर्ट समर्थन टीम को '
+          'एप्लिकेशन में अप्रत्याशित त्रुटि हुई। त्रुटि रिपोर्ट समर्थन टीम को '
           'भेजने के लिए तैयार है। कृपया त्रुटि रिपोर्ट भेजने के लिए '
           'स्वीकार करें या रिपोर्ट को रद्द करने के लिए रद्द करें पर क्लिक '
           'करें।',
-      dialogReportModeAccept: 'स्वीकार करना',
-      dialogReportModeCancel: 'रद्द करना',
+      dialogReportModeAccept: 'स्वीकार करें',
+      dialogReportModeCancel: 'रद्द करें',
       pageReportModeTitle: 'दुर्घटना',
       pageReportModeDescription:
           'आवेदन में अप्रत्याशित त्रुटि हुई। त्रुटि रिपोर्ट समर्थन टीम को '
           'भेजने के लिए तैयार है। कृपया त्रुटि रिपोर्ट भेजने के लिए '
           'स्वीकार करें या रिपोर्ट को रद्द करने के लिए रद्द करें पर क्लिक '
           'करें।',
-      pageReportModeAccept: 'स्वीकार करना',
-      pageReportModeCancel: 'रद्द करना',
+      pageReportModeAccept: 'स्वीकार करें',
+      pageReportModeCancel: 'रद्द करें',
       toastHandlerDescription: 'त्रुटि हुई:',
       snackbarHandlerDescription: 'त्रुटि हुई:',
     );
