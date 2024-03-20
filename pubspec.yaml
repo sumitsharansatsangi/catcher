@@ -26,11 +26,9 @@ dependencies:
     git: https://github.com/sumitsharansatsangi/flutter_styled_toast.git
   device_info_plus:
     git: https://github.com/kumsumit/device_info_plus.git
-  device_info_plus_platform_interface:
-    git: https://github.com/kumsumit/device_info_plus_platform_interface.git
   package_info_plus: 
     git:  https://github.com/kumsumit/package_info_plus.git
-  mailer: ^6.0.1
+  mailer: ^6.1.0
   dio: ^5.4.1
   flutter_mailer: 
     git: https://github.com/kumsumit/flutter_mailer.git
