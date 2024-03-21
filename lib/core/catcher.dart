@@ -413,19 +413,6 @@ class Catcher implements ReportModeAction {
       _deviceParameters['versionSecurityPatch'] =
           androidDeviceInfo.version.securityPatch;
       _deviceParameters['systemFeatures'] = androidDeviceInfo.systemFeatures;
-      _deviceParameters['displaySizeInches'] =
-          (androidDeviceInfo.displayMetrics.sizeInches * 10).roundToDouble() /
-              10;
-      _deviceParameters['displayWidthPixels'] =
-          androidDeviceInfo.displayMetrics.widthPx;
-      _deviceParameters['displayWidthInches'] =
-          androidDeviceInfo.displayMetrics.widthInches;
-      _deviceParameters['displayHeightPixels'] =
-          androidDeviceInfo.displayMetrics.heightPx;
-      _deviceParameters['displayHeightInches'] =
-          androidDeviceInfo.displayMetrics.heightInches;
-      _deviceParameters['displayXDpi'] = androidDeviceInfo.displayMetrics.xDpi;
-      _deviceParameters['displayYDpi'] = androidDeviceInfo.displayMetrics.yDpi;
       _deviceParameters['serialNumber'] = androidDeviceInfo.serialNumber;
     } catch (exception) {
       _logger.warning('Load Android parameters failed: $exception');
