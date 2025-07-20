@@ -57,7 +57,7 @@ class SentryHandler extends ReportHandler {
       }
 
       final event = buildEvent(report, tags);
-      await sentryClient.captureEvent(event,stackTrace: report.stackTrace);
+      await sentryClient.captureEvent(event, stackTrace: report.stackTrace);
 
       _printLog('Logged to sentry!');
       return true;
@@ -87,7 +87,8 @@ class SentryHandler extends ReportHandler {
       logger: 'Catcher',
       serverName: 'Catcher',
       release: customRelease ?? _getApplicationVersion(report),
-      environment: customEnvironment ??
+      environment:
+          customEnvironment ??
           (report.applicationParameters['environment'] as String?),
       message: const SentryMessage('Error handled by Catcher'),
       throwable: report.error,
@@ -118,11 +119,11 @@ class SentryHandler extends ReportHandler {
 
   @override
   List<PlatformType> getSupportedPlatforms() => [
-        PlatformType.android,
-        PlatformType.iOS,
-        PlatformType.web,
-        PlatformType.linux,
-        PlatformType.macOS,
-        PlatformType.windows,
-      ];
+    PlatformType.android,
+    PlatformType.iOS,
+    PlatformType.web,
+    PlatformType.linux,
+    PlatformType.macOS,
+    PlatformType.windows,
+  ];
 }

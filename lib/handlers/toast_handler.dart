@@ -23,20 +23,22 @@ class ToastHandler extends ReportHandler {
 
   @override
   List<PlatformType> getSupportedPlatforms() => [
-        PlatformType.android,
-        PlatformType.iOS,
-        PlatformType.web,
-        PlatformType.linux,
-        PlatformType.macOS,
-        PlatformType.windows,
-      ];
+    PlatformType.android,
+    PlatformType.iOS,
+    PlatformType.web,
+    PlatformType.linux,
+    PlatformType.macOS,
+    PlatformType.windows,
+  ];
 
   @override
   Future<bool> handle(Report report, BuildContext? context) async {
-    showToast(_getErrorMessage(report),
-        backgroundColor: backgroundColor,
-        textStyle: TextStyle(color: textColor, fontSize: textSize),
-        position: position,);
+    showToast(
+      _getErrorMessage(report),
+      backgroundColor: backgroundColor,
+      textStyle: TextStyle(color: textColor, fontSize: textSize),
+      position: position,
+    );
 
     return true;
   }

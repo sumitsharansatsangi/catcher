@@ -76,11 +76,11 @@ class CustomPageReportMode extends ReportMode {
     BuildContext context,
   ) async {
     await Future<void>.delayed(Duration.zero);
-    if(context.mounted) {
+    if (context.mounted) {
       await Navigator.push<void>(
-      context,
-      MaterialPageRoute(builder: (context) => CustomPage(this, report)),
-    );
+        context,
+        MaterialPageRoute(builder: (context) => CustomPage(this, report)),
+      );
     }
   }
 

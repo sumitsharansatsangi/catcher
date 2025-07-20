@@ -24,15 +24,15 @@ class LocalizationOptions {
     this.dialogReportModeTitle = 'Crash',
     this.dialogReportModeDescription =
         'Unexpected error occurred in application. Error report is ready to'
-            ' send to support team. Please click Accept to send error report '
-            'or Cancel to dismiss report.',
+        ' send to support team. Please click Accept to send error report '
+        'or Cancel to dismiss report.',
     this.dialogReportModeAccept = 'Send',
     this.dialogReportModeCancel = 'Cancel',
     this.pageReportModeTitle = 'Crash',
     this.pageReportModeDescription =
         'Unexpected error occurred in application. Error report is ready to'
-            ' send to support team. Please click Accept to send error report '
-            'or Cancel to dismiss report.',
+        ' send to support team. Please click Accept to send error report '
+        'or Cancel to dismiss report.',
     this.pageReportModeAccept = 'Send',
     this.pageReportModeCancel = 'Cancel',
     this.toastHandlerDescription = 'Error occurred:',
@@ -50,14 +50,16 @@ class LocalizationOptions {
       notificationReportModeContent:
           'انقر هنا لإرسال تقرير الخطأ إلى فريق الدعم.',
       dialogReportModeTitle: 'حدث خطأ',
-      dialogReportModeDescription: 'حدث خطأ غير متوقع في التطبيق.'
+      dialogReportModeDescription:
+          'حدث خطأ غير متوقع في التطبيق.'
           ' تقرير الخطأ جاهز للإرسال إلى فريق الدعم.'
           ' الرجاء النقر فوق "قبول" لإرسال تقرير الخطأ'
           ' أو "إلغاء" لرفض.',
       dialogReportModeAccept: 'قبول',
       dialogReportModeCancel: 'إلغاء',
       pageReportModeTitle: 'حدث خطأ',
-      pageReportModeDescription: 'حدث خطأ غير متوقع في التطبيق.'
+      pageReportModeDescription:
+          'حدث خطأ غير متوقع في التطبيق.'
           ' تقرير الخطأ جاهز للإرسال إلى فريق الدعم.'
           ' الرجاء النقر فوق "قبول" لإرسال تقرير الخطأ'
           ' أو "إلغاء" للرفض.',
@@ -311,7 +313,8 @@ class LocalizationOptions {
       dialogReportModeAccept: '수락',
       dialogReportModeCancel: '취소',
       pageReportModeTitle: '에러',
-      pageReportModeDescription: '어플리케이션에서 예기치 않은 오류가 발생했습니다. 지원팀에 오류를 보고할 '
+      pageReportModeDescription:
+          '어플리케이션에서 예기치 않은 오류가 발생했습니다. 지원팀에 오류를 보고할 '
           '준비가 되어 있으니 수락을 클릭하여 오류 보고서를 전송하시거나 취소를 클릭하여 보고서를 닫으세요.',
       pageReportModeAccept: '수락',
       pageReportModeCancel: '취소',

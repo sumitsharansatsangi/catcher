@@ -15,9 +15,9 @@ class CatcherErrorWidget extends StatelessWidget {
     super.key,
     this.details,
   }) : assert(
-          maxWidthForSmallMode > 0,
-          'Max width for small mode must be greater than 0',
-        );
+         maxWidthForSmallMode > 0,
+         'Max width for small mode must be greater than 0',
+       );
 
   @override
   Widget build(BuildContext context) {

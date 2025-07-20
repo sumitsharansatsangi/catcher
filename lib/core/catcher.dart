@@ -70,9 +70,9 @@ class Catcher implements ReportModeAction {
     this.ensureInitialized = false,
     GlobalKey<NavigatorState>? navigatorKey,
   }) : assert(
-          rootWidget != null || runAppFunction != null,
-          'You need to provide rootWidget or runAppFunction',
-        ) {
+         rootWidget != null || runAppFunction != null,
+         'You need to provide rootWidget or runAppFunction',
+       ) {
     _configure(navigatorKey);
   }
 
@@ -192,10 +192,11 @@ class Catcher implements ReportModeAction {
         errorDetails: details,
       );
     };
- PlatformDispatcher.instance.onError = (error, stack) {
+    PlatformDispatcher.instance.onError = (error, stack) {
       _reportError(error, stack);
       return true;
     };
+
     ///Web doesn't have Isolate error listener support
     if (!ApplicationProfileManager.isWeb()) {
       Isolate.current.addErrorListener(
@@ -219,18 +220,19 @@ class Catcher implements ReportModeAction {
       // _runZonedGuarded(() {
       //   runAppFunction!();
       // });
-       _initWidgetsBinding();
+      _initWidgetsBinding();
       runAppFunction!();
     } else {
       throw ArgumentError('Provide rootWidget or runAppFunction to Catcher.');
     }
   }
 
-    void _initWidgetsBinding() {
+  void _initWidgetsBinding() {
     if (ensureInitialized) {
       WidgetsFlutterBinding.ensureInitialized();
     }
-    }
+  }
+
   void _configureLogger() {
     if (_currentConfig.logger != null) {
       _logger = _currentConfig.logger!;
@@ -468,8 +470,9 @@ class Catcher implements ReportModeAction {
       }
     }
 
-    _localizationOptions ??=
-        _getDefaultLocalizationOptionsForLanguage(locale.languageCode);
+    _localizationOptions ??= _getDefaultLocalizationOptionsForLanguage(
+      locale.languageCode,
+    );
     _setupLocalizationsOptionsInReportMode();
     _setupLocalizationsOptionsInReportsHandler();
   }
@@ -650,8 +653,9 @@ class Catcher implements ReportModeAction {
 
   @override
   void onActionConfirmed(Report report) {
-    final reportHandler =
-        _getReportHandlerFromExplicitExceptionHandlerMap(report.error);
+    final reportHandler = _getReportHandlerFromExplicitExceptionHandlerMap(
+      report.error,
+    );
     if (reportHandler != null) {
       _logger.info('Using explicit report handler');
       _handleReport(report, reportHandler);
@@ -683,25 +687,27 @@ class Catcher implements ReportModeAction {
     reportHandler
         .handle(report, _getContext())
         .catchError((dynamic handlerError) {
-      _logger.warning(
-        'Error occurred in $reportHandler: $handlerError',
-      );
-      return true;
-    }).then((result) {
-      _logger.info('${report.runtimeType} result: $result');
-      if (!result) {
-        _logger.warning('$reportHandler failed to report error');
-      } else {
-        _cachedReports.remove(report);
-      }
-    }).timeout(
-      Duration(milliseconds: _currentConfig.handlerTimeout),
-      onTimeout: () {
-        _logger.warning(
-          '$reportHandler failed to report error because of timeout',
+          _logger.warning(
+            'Error occurred in $reportHandler: $handlerError',
+          );
+          return true;
+        })
+        .then((result) {
+          _logger.info('${report.runtimeType} result: $result');
+          if (!result) {
+            _logger.warning('$reportHandler failed to report error');
+          } else {
+            _cachedReports.remove(report);
+          }
+        })
+        .timeout(
+          Duration(milliseconds: _currentConfig.handlerTimeout),
+          onTimeout: () {
+            _logger.warning(
+              '$reportHandler failed to report error because of timeout',
+            );
+          },
         );
-      },
-    );
   }
 
   /// Checks is report handler is supported in given platform. Only supported
@@ -721,8 +727,8 @@ class Catcher implements ReportModeAction {
     _currentConfig.handlers
         .where((handler) => handler.shouldHandleWhenRejected())
         .forEach((handler) {
-      _handleReport(report, handler);
-    });
+          _handleReport(report, handler);
+        });
 
     _cachedReports.remove(report);
   }
@@ -751,7 +757,7 @@ class Catcher implements ReportModeAction {
     String title = 'An application error has occurred',
     String description =
         'There was unexpected situation in application. Application has been '
-            'able to recover from error state.',
+        'able to recover from error state.',
     double maxWidthForSmallMode = 150,
   }) {
     ErrorWidget.builder = (FlutterErrorDetails details) {
@@ -794,8 +800,9 @@ class Catcher implements ReportModeAction {
     final occurrenceTimeout = _currentConfig.reportOccurrenceTimeout;
     final nowDateTime = DateTime.now();
     _reportsOccurrenceMap.removeWhere((key, value) {
-      final occurrenceWithTimeout =
-          key.add(Duration(milliseconds: occurrenceTimeout));
+      final occurrenceWithTimeout = key.add(
+        Duration(milliseconds: occurrenceTimeout),
+      );
       return nowDateTime.isAfter(occurrenceWithTimeout);
     });
   }

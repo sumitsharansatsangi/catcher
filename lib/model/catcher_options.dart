@@ -73,49 +73,49 @@ class CatcherOptions {
 
   /// Builds default catcher options release instance
   CatcherOptions.getDefaultReleaseOptions()
-      : handlers = [ConsoleHandler()],
-        reportMode = DialogReportMode(),
-        handlerTimeout = 5000,
-        customParameters = <String, dynamic>{},
-        localizationOptions = [],
-        explicitExceptionReportModesMap = {},
-        explicitExceptionHandlersMap = {},
-        handleSilentError = true,
-        screenshotsPath = '',
-        excludedParameters = const [],
-        filterFunction = null,
-        reportOccurrenceTimeout = 3000,
-        logger = CatcherLogger();
+    : handlers = [ConsoleHandler()],
+      reportMode = DialogReportMode(),
+      handlerTimeout = 5000,
+      customParameters = <String, dynamic>{},
+      localizationOptions = [],
+      explicitExceptionReportModesMap = {},
+      explicitExceptionHandlersMap = {},
+      handleSilentError = true,
+      screenshotsPath = '',
+      excludedParameters = const [],
+      filterFunction = null,
+      reportOccurrenceTimeout = 3000,
+      logger = CatcherLogger();
 
   /// Builds default catcher options debug instance
   CatcherOptions.getDefaultDebugOptions()
-      : handlers = [ConsoleHandler()],
-        reportMode = SilentReportMode(),
-        handlerTimeout = 10000,
-        customParameters = <String, dynamic>{},
-        localizationOptions = [],
-        explicitExceptionReportModesMap = {},
-        explicitExceptionHandlersMap = {},
-        handleSilentError = true,
-        screenshotsPath = '',
-        excludedParameters = const [],
-        filterFunction = null,
-        reportOccurrenceTimeout = 3000,
-        logger = CatcherLogger();
+    : handlers = [ConsoleHandler()],
+      reportMode = SilentReportMode(),
+      handlerTimeout = 10000,
+      customParameters = <String, dynamic>{},
+      localizationOptions = [],
+      explicitExceptionReportModesMap = {},
+      explicitExceptionHandlersMap = {},
+      handleSilentError = true,
+      screenshotsPath = '',
+      excludedParameters = const [],
+      filterFunction = null,
+      reportOccurrenceTimeout = 3000,
+      logger = CatcherLogger();
 
   /// Builds default catcher options profile instance
   CatcherOptions.getDefaultProfileOptions()
-      : handlers = [ConsoleHandler()],
-        reportMode = SilentReportMode(),
-        handlerTimeout = 10000,
-        customParameters = <String, dynamic>{},
-        localizationOptions = [],
-        explicitExceptionReportModesMap = {},
-        explicitExceptionHandlersMap = {},
-        handleSilentError = true,
-        screenshotsPath = '',
-        excludedParameters = const [],
-        filterFunction = null,
-        reportOccurrenceTimeout = 3000,
-        logger = CatcherLogger();
+    : handlers = [ConsoleHandler()],
+      reportMode = SilentReportMode(),
+      handlerTimeout = 10000,
+      customParameters = <String, dynamic>{},
+      localizationOptions = [],
+      explicitExceptionReportModesMap = {},
+      explicitExceptionHandlersMap = {},
+      handleSilentError = true,
+      screenshotsPath = '',
+      excludedParameters = const [],
+      filterFunction = null,
+      reportOccurrenceTimeout = 3000,
+      logger = CatcherLogger();
 }

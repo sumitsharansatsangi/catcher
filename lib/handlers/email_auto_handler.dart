@@ -32,15 +32,15 @@ class EmailAutoHandler extends BaseEmailHandler {
     bool enableApplicationParameters = true,
     bool enableStackTrace = true,
     bool enableCustomParameters = true,
-  })  : assert(recipients.isNotEmpty, "Recipients can't be null or empty"),
-        super(
-          enableDeviceParameters,
-          enableApplicationParameters,
-          enableStackTrace,
-          enableCustomParameters,
-          emailTitle,
-          emailHeader,
-        );
+  }) : assert(recipients.isNotEmpty, "Recipients can't be null or empty"),
+       super(
+         enableDeviceParameters,
+         enableApplicationParameters,
+         enableStackTrace,
+         enableCustomParameters,
+         emailTitle,
+         emailHeader,
+       );
 
   @override
   Future<bool> handle(Report report, BuildContext? context) {
@@ -98,11 +98,11 @@ class EmailAutoHandler extends BaseEmailHandler {
 
   @override
   List<PlatformType> getSupportedPlatforms() => [
-        PlatformType.android,
-        PlatformType.iOS,
-        PlatformType.web,
-        PlatformType.linux,
-        PlatformType.macOS,
-        PlatformType.windows,
-      ];
+    PlatformType.android,
+    PlatformType.iOS,
+    PlatformType.web,
+    PlatformType.linux,
+    PlatformType.macOS,
+    PlatformType.windows,
+  ];
 }

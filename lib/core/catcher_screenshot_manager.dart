@@ -64,8 +64,9 @@ class CatcherScreenshotManager {
           delay: Duration.zero,
           pixelRatio: pixelRatio,
         );
-        final byteData =
-            await image?.toByteData(format: ui.ImageByteFormat.png);
+        final byteData = await image?.toByteData(
+          format: ui.ImageByteFormat.png,
+        );
         image?.dispose();
 
         final pngBytes = byteData?.buffer.asUint8List();
@@ -85,8 +86,8 @@ class CatcherScreenshotManager {
     //Delay is required. See Issue https://github.com/flutter/flutter/issues/22308
     return Future.delayed(delay, () async {
       try {
-        final findRenderObject =
-            _containerKey.currentContext?.findRenderObject();
+        final findRenderObject = _containerKey.currentContext
+            ?.findRenderObject();
 
         print(containerKey.currentContext);
         print(_containerKey.currentContext?.findRenderObject());
