@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.library") version "9.2.1"
-    id("org.jetbrains.kotlin.android") version "2.2.10"
+    id("com.android.library") 
+    id("org.jetbrains.kotlin.android") version "2.3.21"
 }
 
 group = "com.jhomlala.catcher"
