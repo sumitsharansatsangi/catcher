@@ -59,7 +59,7 @@ class HttpHandler extends ReportHandler {
         enableCustomParameters: enableCustomParameters,
       );
       final mutableHeaders = HashMap<String, dynamic>();
-      if (headers.isNotEmpty == true) {
+      if (headers.isNotEmpty) {
         mutableHeaders.addAll(headers);
       }
 
@@ -94,7 +94,7 @@ class HttpHandler extends ReportHandler {
         ' ${response.data}',
       );
       return true;
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       _printLog('HttpHandler error: $error, stackTrace: $stackTrace');
       return false;
     }

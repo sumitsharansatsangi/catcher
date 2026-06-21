@@ -8,13 +8,11 @@ abstract class ReportMode {
   late ReportModeAction _reportModeAction;
   LocalizationOptions? _localizationOptions;
 
-  // ignore: use_setters_to_change_properties
   /// Set report mode action.
   void setReportModeAction(ReportModeAction reportModeAction) {
     _reportModeAction = reportModeAction;
   }
 
-  // ignore: use_setters_to_change_properties
   /// Set localization options (translations) to this report mode
   void setLocalizationOptions(LocalizationOptions? localizationOptions) {
     _localizationOptions = localizationOptions;

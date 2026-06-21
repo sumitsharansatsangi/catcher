@@ -94,7 +94,7 @@ class SnackbarHandler extends ReportHandler {
         ),
       );
       return true;
-    } catch (exception, stackTrace) {
+    } on Object catch (exception, stackTrace) {
       _printLog('Failed to show snackbar: $exception, $stackTrace');
       return false;
     }
@@ -104,7 +104,7 @@ class SnackbarHandler extends ReportHandler {
   bool _hasScaffoldMessenger(BuildContext context) {
     try {
       return context.findAncestorWidgetOfExactType<ScaffoldMessenger>() != null;
-    } catch (exception, stackTrace) {
+    } on Object catch (exception, stackTrace) {
       _printLog('_hasScaffoldMessenger failed: $exception, $stackTrace');
       return false;
     }

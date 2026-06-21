@@ -21,7 +21,6 @@ abstract class ReportHandler {
   LocalizationOptions get localizationOptions =>
       _localizationOptions ?? LocalizationOptions.buildDefaultEnglishOptions();
 
-  // ignore: use_setters_to_change_properties
   /// Set localization options (translations) to this report mode
   void setLocalizationOptions(LocalizationOptions? localizationOptions) {
     _localizationOptions = localizationOptions;

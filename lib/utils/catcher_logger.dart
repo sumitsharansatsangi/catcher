@@ -8,8 +8,7 @@ class CatcherLogger {
   void setup() {
     Logger.root.level = Level.ALL;
     Logger.root.onRecord.listen(
-      (LogRecord rec) {
-        // ignore: avoid_print
+      (rec) {
         print(
           '[${rec.time} | ${rec.loggerName} | ${rec.level.name}] '
           '${rec.message}',

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:catcher/catcher.dart';
 import 'package:catcher/model/platform_type.dart';
 import 'package:catcher/utils/catcher_utils.dart';
@@ -14,7 +16,7 @@ class PageReportMode extends ReportMode {
   @override
   void requestAction(Report report, BuildContext? context) {
     if (context != null) {
-      _navigateToPageWidget(report, context);
+      unawaited(_navigateToPageWidget(report, context));
     }
   }
 
@@ -67,8 +69,8 @@ class PageWidgetState extends State<PageWidget> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (value) async {
-        if (value) {
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
           widget.pageReportMode.onActionRejected(widget.report);
         }
       },
@@ -186,10 +188,9 @@ class PageWidgetState extends State<PageWidget> {
         child: ListView.builder(
           padding: const EdgeInsets.all(8),
           itemCount: items.length,
-          itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (context, index) {
             return Text(
-              // ignore: unnecessary_string_interpolations
-              '${items[index]}',
+              items[index],
               style: _getTextStyle(10),
             );
           },

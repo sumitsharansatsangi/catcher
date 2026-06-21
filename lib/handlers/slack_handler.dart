@@ -64,7 +64,7 @@ class SlackHandler extends ReportHandler {
       );
       final statusCode = response.statusCode ?? 0;
       return statusCode >= 200 && statusCode < 300;
-    } catch (exception) {
+    } on Object catch (exception) {
       _printLog('Failed to send slack message: $exception');
       return false;
     }

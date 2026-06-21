@@ -73,9 +73,9 @@ class EmailAutoHandler extends BaseEmailHandler {
       );
 
       return true;
-    } catch (stacktrace, exception) {
-      _printLog(stacktrace.toString());
+    } on Object catch (exception, stackTrace) {
       _printLog(exception.toString());
+      _printLog(stackTrace.toString());
       return false;
     }
   }

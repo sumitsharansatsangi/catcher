@@ -100,7 +100,7 @@ class NotificationReportMode extends ReportMode {
     );
 
     _flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
+     settings: initializationSettings,
       onDidReceiveNotificationResponse: onSelectedNotification,
     );
   }
@@ -128,10 +128,10 @@ class NotificationReportMode extends ReportMode {
         iOS: iOSPlatformChannelSpecifics);
 
     await _flutterLocalNotificationsPlugin.show(
-      0,
-      localizationOptions.notificationReportModeTitle,
-      localizationOptions.notificationReportModeContent,
-      platformChannelSpecifics,
+      id: 0,
+      title: localizationOptions.notificationReportModeTitle,
+      body: localizationOptions.notificationReportModeContent,
+      notificationDetails: platformChannelSpecifics,
       payload: '',
     );
   }

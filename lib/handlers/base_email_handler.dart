@@ -24,7 +24,7 @@ abstract class BaseEmailHandler extends ReportHandler {
 
   ///Setup email title from [report].
   String getEmailTitle(Report report) {
-    if (emailTitle?.isNotEmpty ?? false == true) {
+    if (emailTitle?.isNotEmpty ?? false) {
       return emailTitle!;
     } else {
       return 'Error report: >> ${report.error} <<';

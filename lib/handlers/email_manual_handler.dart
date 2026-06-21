@@ -49,7 +49,7 @@ class EmailManualHandler extends BaseEmailHandler {
       await FlutterMailer.send(mailOptions);
       _printLog('Creating mail request success');
       return true;
-    } catch (exc, stackTrace) {
+    } on Object catch (exc, stackTrace) {
       _printLog('Exception occurred: $exc stack: $stackTrace');
       return false;
     }

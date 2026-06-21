@@ -29,7 +29,7 @@ class CatcherScreenshotManager {
     Duration delay = const Duration(milliseconds: 20),
   }) async {
     try {
-      if (_path?.isEmpty ?? false == true) {
+      if (_path?.isEmpty ?? false) {
         return null;
       }
       final content = await _capture(
@@ -40,7 +40,7 @@ class CatcherScreenshotManager {
       if (content != null) {
         return saveFile(content);
       }
-    } catch (exception) {
+    } on Object catch (exception) {
       _logger.warning('Failed to create screenshot file: $exception');
     }
     return null;
@@ -72,7 +72,7 @@ class CatcherScreenshotManager {
         final pngBytes = byteData?.buffer.asUint8List();
 
         return pngBytes;
-      } catch (exception) {
+      } on Object catch (exception) {
         _logger.severe('Failed to capture screenshot: $exception');
       }
       return null;
@@ -106,7 +106,7 @@ class CatcherScreenshotManager {
         }
         final image = await boundary.toImage(pixelRatio: pixelRatioValue ?? 1);
         return image;
-      } catch (exception) {
+      } on Object catch (exception) {
         _logger.severe('Failed to capture screenshot: $exception');
       }
       return null;

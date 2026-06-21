@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:catcher/model/platform_type.dart';
 import 'package:catcher/model/report.dart';
 import 'package:catcher/model/report_mode.dart';
@@ -8,7 +10,7 @@ import 'package:flutter/material.dart';
 class DialogReportMode extends ReportMode {
   @override
   void requestAction(Report report, BuildContext? context) {
-    _showDialog(report, context);
+    unawaited(_showDialog(report, context));
   }
 
   Future<void> _showDialog(Report report, BuildContext? context) async {
@@ -31,8 +33,8 @@ class DialogReportMode extends ReportMode {
 
   Widget _buildCupertinoDialog(Report report, BuildContext context) {
     return PopScope(
-      onPopInvoked: (value) async {
-        if (value) {
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
           super.onActionRejected(report);
         }
       },
@@ -55,8 +57,8 @@ class DialogReportMode extends ReportMode {
 
   Widget _buildMaterialDialog(Report report, BuildContext context) {
     return PopScope(
-      onPopInvoked: (value) async {
-        if (value) {
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
           super.onActionRejected(report);
         }
       },

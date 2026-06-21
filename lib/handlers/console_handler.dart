@@ -75,9 +75,7 @@ class ConsoleHandler extends ReportHandler {
 
   void _printStackTraceFormatted(StackTrace? stackTrace) {
     logger.info('------- STACK TRACE -------');
-    for (final entry in stackTrace.toString().split('\n')) {
-      logger.info(entry);
-    }
+    stackTrace.toString().split('\n').forEach(logger.info);
   }
 
   @override

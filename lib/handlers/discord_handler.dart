@@ -133,7 +133,7 @@ class DiscordHandler extends ReportHandler {
       );
       final statusCode = response.statusCode ?? 0;
       return statusCode >= 200 && statusCode < 300;
-    } catch (exception) {
+    } on Object catch (exception) {
       _printLog('Failed to send data to Discord server: $exception');
       return false;
     }

@@ -37,7 +37,7 @@ class FileHandler extends ReportHandler {
         _fileValidated = true;
       }
       return await _processReport(report);
-    } catch (exc, stackTrace) {
+    } on Object catch (exc, stackTrace) {
       _printLog('Exception occurred: $exc stack: $stackTrace');
       return false;
     }
@@ -64,7 +64,7 @@ class FileHandler extends ReportHandler {
       await sink.flush();
       await sink.close();
       return true;
-    } catch (exc, stackTrace) {
+    } on Object catch (exc, stackTrace) {
       _printLog('Exception occurred: $exc stack: $stackTrace');
       return false;
     }

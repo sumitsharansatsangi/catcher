@@ -88,9 +88,9 @@ class CatcherErrorWidget extends StatelessWidget {
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
+        itemBuilder: (context, index) {
           final line = items[index];
-          if (line.isNotEmpty == true) {
+          if (line.isNotEmpty) {
             return Text(line);
           } else {
             return const SizedBox();

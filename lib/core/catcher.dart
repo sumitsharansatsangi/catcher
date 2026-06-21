@@ -81,7 +81,7 @@ class Catcher implements ReportModeAction {
     _configureNavigatorKey(navigatorKey);
     _setupCurrentConfig();
     _configureLogger();
-    _setupErrorHooks();
+    unawaited(_setupErrorHooks());
     _setupScreenshotManager();
     _setupReportModeActionInReportMode();
 
@@ -185,7 +185,7 @@ class Catcher implements ReportModeAction {
   }
 
   Future<void> _setupErrorHooks() async {
-    FlutterError.onError = (FlutterErrorDetails details) async {
+    FlutterError.onError = (details) async {
       await _reportError(
         details.exception,
         details.stack,
@@ -193,7 +193,7 @@ class Catcher implements ReportModeAction {
       );
     };
     PlatformDispatcher.instance.onError = (error, stack) {
-      _reportError(error, stack);
+      unawaited(_reportError(error, stack));
       return true;
     };
 
@@ -251,35 +251,47 @@ class Catcher implements ReportModeAction {
   void _loadDeviceInfo() {
     final deviceInfo = DeviceInfoPlugin();
     if (ApplicationProfileManager.isWeb()) {
-      deviceInfo.webBrowserInfo.then((webBrowserInfo) {
-        _loadWebParameters(webBrowserInfo);
-        _removeExcludedParameters();
-      });
+      unawaited(
+        deviceInfo.webBrowserInfo.then((webBrowserInfo) {
+          _loadWebParameters(webBrowserInfo);
+          _removeExcludedParameters();
+        }),
+      );
     } else if (ApplicationProfileManager.isLinux()) {
-      deviceInfo.linuxInfo.then((linuxDeviceInfo) {
-        _loadLinuxParameters(linuxDeviceInfo);
-        _removeExcludedParameters();
-      });
+      unawaited(
+        deviceInfo.linuxInfo.then((linuxDeviceInfo) {
+          _loadLinuxParameters(linuxDeviceInfo);
+          _removeExcludedParameters();
+        }),
+      );
     } else if (ApplicationProfileManager.isWindows()) {
-      deviceInfo.windowsInfo.then((windowsInfo) {
-        _loadWindowsParameters(windowsInfo);
-        _removeExcludedParameters();
-      });
+      unawaited(
+        deviceInfo.windowsInfo.then((windowsInfo) {
+          _loadWindowsParameters(windowsInfo);
+          _removeExcludedParameters();
+        }),
+      );
     } else if (ApplicationProfileManager.isMacOS()) {
-      deviceInfo.macOsInfo.then((macOsDeviceInfo) {
-        _loadMacOSParameters(macOsDeviceInfo);
-        _removeExcludedParameters();
-      });
+      unawaited(
+        deviceInfo.macOsInfo.then((macOsDeviceInfo) {
+          _loadMacOSParameters(macOsDeviceInfo);
+          _removeExcludedParameters();
+        }),
+      );
     } else if (ApplicationProfileManager.isAndroid()) {
-      deviceInfo.androidInfo.then((androidInfo) {
-        _loadAndroidParameters(androidInfo);
-        _removeExcludedParameters();
-      });
+      unawaited(
+        deviceInfo.androidInfo.then((androidInfo) {
+          _loadAndroidParameters(androidInfo);
+          _removeExcludedParameters();
+        }),
+      );
     } else if (ApplicationProfileManager.isIos()) {
-      deviceInfo.iosInfo.then((iosInfo) {
-        _loadIosParameters(iosInfo);
-        _removeExcludedParameters();
-      });
+      unawaited(
+        deviceInfo.iosInfo.then((iosInfo) {
+          _loadIosParameters(iosInfo);
+          _removeExcludedParameters();
+        }),
+      );
     } else {
       _logger.info("Couldn't load device info for unsupported device type.");
     }
@@ -303,7 +315,7 @@ class Catcher implements ReportModeAction {
       _deviceParameters['variant'] = linuxDeviceInfo.variant;
       _deviceParameters['variantId'] = linuxDeviceInfo.variantId;
       _deviceParameters['machineId'] = linuxDeviceInfo.machineId;
-    } catch (exception) {
+    } on Object catch (exception) {
       _logger.warning('Load Linux parameters failed: $exception');
     }
   }
@@ -323,7 +335,7 @@ class Catcher implements ReportModeAction {
       _deviceParameters['memorySize'] = macOsDeviceInfo.memorySize;
       _deviceParameters['cpuFrequency'] = macOsDeviceInfo.cpuFrequency;
       _deviceParameters['systemGUID'] = macOsDeviceInfo.systemGUID;
-    } catch (exception) {
+    } on Object catch (exception) {
       _logger.warning('Load MacOS parameters failed: $exception');
     }
   }
@@ -358,12 +370,12 @@ class Catcher implements ReportModeAction {
       _deviceParameters['registeredOwner'] = windowsDeviceInfo.registeredOwner;
       _deviceParameters['releaseId'] = windowsDeviceInfo.releaseId;
       _deviceParameters['deviceId'] = windowsDeviceInfo.deviceId;
-    } catch (exception) {
+    } on Object catch (exception) {
       _logger.warning('Load Windows parameters failed: $exception');
     }
   }
 
-  Future<void> _loadWebParameters(WebBrowserInfo webBrowserInfo) async {
+  void _loadWebParameters(WebBrowserInfo webBrowserInfo) {
     try {
       _deviceParameters['language'] = webBrowserInfo.language;
       _deviceParameters['appCodeName'] = webBrowserInfo.appCodeName;
@@ -381,7 +393,7 @@ class Catcher implements ReportModeAction {
       _deviceParameters['userAgent'] = webBrowserInfo.userAgent;
       _deviceParameters['vendor'] = webBrowserInfo.vendor;
       _deviceParameters['vendorSub'] = webBrowserInfo.vendorSub;
-    } catch (exception) {
+    } on Object catch (exception) {
       _logger.warning('Load Web parameters failed: $exception');
     }
   }
@@ -415,8 +427,7 @@ class Catcher implements ReportModeAction {
       _deviceParameters['versionSecurityPatch'] =
           androidDeviceInfo.version.securityPatch;
       _deviceParameters['systemFeatures'] = androidDeviceInfo.systemFeatures;
-      _deviceParameters['serialNumber'] = androidDeviceInfo.serialNumber;
-    } catch (exception) {
+    } on Object catch (exception) {
       _logger.warning('Load Android parameters failed: $exception');
     }
   }
@@ -434,7 +445,7 @@ class Catcher implements ReportModeAction {
       _deviceParameters['utsnameMachine'] = iosInfo.utsname.machine;
       _deviceParameters['utsnameNodename'] = iosInfo.utsname.nodename;
       _deviceParameters['utsnameSysname'] = iosInfo.utsname.sysname;
-    } catch (exception) {
+    } on Object catch (exception) {
       _logger.warning('Load iOS parameters failed: $exception');
     }
   }
@@ -443,12 +454,14 @@ class Catcher implements ReportModeAction {
     _applicationParameters['environment'] =
         ApplicationProfileManager.getApplicationProfile().name;
 
-    PackageInfo.fromPlatform().then((packageInfo) {
-      _applicationParameters['version'] = packageInfo.version;
-      _applicationParameters['appName'] = packageInfo.appName;
-      _applicationParameters['buildNumber'] = packageInfo.buildNumber;
-      _applicationParameters['packageName'] = packageInfo.packageName;
-    });
+    unawaited(
+      PackageInfo.fromPlatform().then((packageInfo) {
+        _applicationParameters['version'] = packageInfo.version;
+        _applicationParameters['appName'] = packageInfo.appName;
+        _applicationParameters['buildNumber'] = packageInfo.buildNumber;
+        _applicationParameters['packageName'] = packageInfo.packageName;
+      }),
+    );
   }
 
   ///We need to setup localizations lazily because context needed to setup these
@@ -460,7 +473,7 @@ class Catcher implements ReportModeAction {
       if (context != null) {
         locale = Localizations.localeOf(context);
       }
-      if (_currentConfig.localizationOptions.isNotEmpty == true) {
+      if (_currentConfig.localizationOptions.isNotEmpty) {
         for (final options in _currentConfig.localizationOptions) {
           if (options.languageCode.toLowerCase() ==
               locale.languageCode.toLowerCase()) {
@@ -529,7 +542,7 @@ class Catcher implements ReportModeAction {
     dynamic stackTraceValue = stackTrace;
     errorValue ??= 'undefined error';
     stackTraceValue ??= StackTrace.current;
-    _instance._reportError(error, stackTrace);
+    unawaited(_instance._reportError(error, stackTrace));
   }
 
   Future<void> _reportError(
@@ -537,8 +550,7 @@ class Catcher implements ReportModeAction {
     dynamic stackTrace, {
     FlutterErrorDetails? errorDetails,
   }) async {
-    if (errorDetails?.silent ??
-        false == true && _currentConfig.handleSilentError == false) {
+    if (errorDetails?.silent ?? false) {
       _logger.info(
         'Report error skipped for error: $error. HandleSilentError is false.',
       );
@@ -578,7 +590,7 @@ class Catcher implements ReportModeAction {
     }
 
     if (_currentConfig.filterFunction != null &&
-        _currentConfig.filterFunction!(report) == false) {
+        !_currentConfig.filterFunction!(report)) {
       _logger.fine(
         "Error: '$error' has been filtered from Catcher logs. Report will be "
         'skipped.',
@@ -684,30 +696,32 @@ class Catcher implements ReportModeAction {
       return;
     }
 
-    reportHandler
-        .handle(report, _getContext())
-        .catchError((dynamic handlerError) {
-          _logger.warning(
-            'Error occurred in $reportHandler: $handlerError',
-          );
-          return true;
-        })
-        .then((result) {
-          _logger.info('${report.runtimeType} result: $result');
-          if (!result) {
-            _logger.warning('$reportHandler failed to report error');
-          } else {
-            _cachedReports.remove(report);
-          }
-        })
-        .timeout(
-          Duration(milliseconds: _currentConfig.handlerTimeout),
-          onTimeout: () {
+    unawaited(
+      reportHandler
+          .handle(report, _getContext())
+          .catchError((dynamic handlerError) {
             _logger.warning(
-              '$reportHandler failed to report error because of timeout',
+              'Error occurred in $reportHandler: $handlerError',
             );
-          },
-        );
+            return true;
+          })
+          .then((result) {
+            _logger.info('${report.runtimeType} result: $result');
+            if (!result) {
+              _logger.warning('$reportHandler failed to report error');
+            } else {
+              _cachedReports.remove(report);
+            }
+          })
+          .timeout(
+            Duration(milliseconds: _currentConfig.handlerTimeout),
+            onTimeout: () {
+              _logger.warning(
+                '$reportHandler failed to report error because of timeout',
+              );
+            },
+          ),
+    );
   }
 
   /// Checks is report handler is supported in given platform. Only supported
@@ -716,7 +730,7 @@ class Catcher implements ReportModeAction {
     Report report,
     ReportHandler reportHandler,
   ) {
-    if (reportHandler.getSupportedPlatforms().isEmpty == true) {
+    if (reportHandler.getSupportedPlatforms().isEmpty) {
       return false;
     }
     return reportHandler.getSupportedPlatforms().contains(report.platformType);
@@ -760,7 +774,7 @@ class Catcher implements ReportModeAction {
         'able to recover from error state.',
     double maxWidthForSmallMode = 150,
   }) {
-    ErrorWidget.builder = (FlutterErrorDetails details) {
+    ErrorWidget.builder = (details) {
       return CatcherErrorWidget(
         details: details,
         showStacktrace: showStacktrace,
