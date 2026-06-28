@@ -1,8 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.library") 
-    id("org.jetbrains.kotlin.android")
+    id("com.android.library")
 }
 
 group = "com.jhomlala.catcher"
@@ -32,11 +31,5 @@ android {
         getByName("main") {
             java.srcDir("src/main/kotlin")
         }
-    }
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
