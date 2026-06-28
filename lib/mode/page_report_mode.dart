@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:catcher/catcher.dart';
-import 'package:catcher/model/platform_type.dart';
 import 'package:catcher/utils/catcher_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

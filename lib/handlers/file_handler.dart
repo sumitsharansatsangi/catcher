@@ -91,6 +91,8 @@ class FileHandler extends ReportHandler {
       '============================ CATCHER LOG ============================',
     );
     _writeLineToFile('Crash occurred on ${report.dateTime}');
+    _writeLineToFile('Severity: ${report.severity.name}');
+    _writeLineToFile('Fingerprint: ${report.fingerprint}');
     _writeLineToFile('');
     if (enableDeviceParameters) {
       _logDeviceParametersFormatted(report.deviceParameters);
@@ -109,6 +111,24 @@ class FileHandler extends ReportHandler {
     }
     if (enableCustomParameters) {
       _logCustomParametersFormatted(report.customParameters);
+    }
+    if (report.tags.isNotEmpty) {
+      _logMapFormatted('------- TAGS -------', report.tags);
+    }
+    if (report.extras.isNotEmpty) {
+      _logMapFormatted('------- EXTRAS -------', report.extras);
+    }
+    if (report.user.isNotEmpty) {
+      _logMapFormatted('------- USER -------', report.user);
+    }
+    if (report.breadcrumbs.isNotEmpty) {
+      _writeLineToFile('------- BREADCRUMBS -------');
+      for (final breadcrumb in report.breadcrumbs) {
+        _writeLineToFile(
+          '${breadcrumb.timestamp.toIso8601String()} '
+          '${breadcrumb.category ?? ''} ${breadcrumb.message}',
+        );
+      }
     }
     _writeLineToFile(
       '======================================================================',
@@ -132,8 +152,12 @@ class FileHandler extends ReportHandler {
   }
 
   void _logCustomParametersFormatted(Map<String, dynamic> customParameters) {
-    _writeLineToFile('------- CUSTOM INFO -------');
-    for (final entry in customParameters.entries) {
+    _logMapFormatted('------- CUSTOM INFO -------', customParameters);
+  }
+
+  void _logMapFormatted(String title, Map<String, dynamic> values) {
+    _writeLineToFile(title);
+    for (final entry in values.entries) {
       _writeLineToFile('${entry.key}: ${entry.value}');
     }
   }

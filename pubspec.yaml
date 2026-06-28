@@ -39,6 +39,8 @@ dependencies:
   very_good_analysis: ^10.3.0
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   lints: ^6.0.0
 
 flutter:

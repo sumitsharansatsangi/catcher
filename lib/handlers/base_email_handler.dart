@@ -41,6 +41,10 @@ abstract class BaseEmailHandler extends ReportHandler {
     }
 
     buffer
+      ..write('<h2>Severity:</h2>')
+      ..write(_escapeHtmlValue(report.severity.name))
+      ..write('<h2>Fingerprint:</h2>')
+      ..write(_escapeHtmlValue(report.fingerprint))
       ..write('<h2>Error:</h2>')
       ..write(_escapeHtmlValue(report.error.toString()))
       ..write('<hr><br>');
@@ -82,8 +86,36 @@ abstract class BaseEmailHandler extends ReportHandler {
       }
       buffer.write('<br><br>');
     }
+    _writeHtmlMap(buffer, 'Tags', report.tags);
+    _writeHtmlMap(buffer, 'Extras', report.extras);
+    _writeHtmlMap(buffer, 'User', report.user);
+    if (report.breadcrumbs.isNotEmpty) {
+      buffer.write('<h2>Breadcrumbs:</h2>');
+      for (final breadcrumb in report.breadcrumbs) {
+        buffer.write(
+          '${breadcrumb.timestamp.toIso8601String()} '
+          '${_escapeHtmlValue(breadcrumb.message)}<br>',
+        );
+      }
+      buffer.write('<br><br>');
+    }
 
     return buffer.toString();
+  }
+
+  void _writeHtmlMap(
+    StringBuffer buffer,
+    String title,
+    Map<String, dynamic> values,
+  ) {
+    if (values.isEmpty) {
+      return;
+    }
+    buffer.write('<h2>$title:</h2>');
+    for (final entry in values.entries) {
+      buffer.write('<b>${entry.key}</b>: ${_escapeHtmlValue(entry.value)}<br>');
+    }
+    buffer.write('<br><br>');
   }
 
   ///Escape html value from [value].
@@ -101,6 +133,12 @@ abstract class BaseEmailHandler extends ReportHandler {
     }
 
     buffer
+      ..write('Severity:\n')
+      ..write(report.severity.name)
+      ..write('\n\n')
+      ..write('Fingerprint:\n')
+      ..write(report.fingerprint)
+      ..write('\n\n')
       ..write('Error:\n')
       ..write(report.error.toString())
       ..write('\n\n');
@@ -131,6 +169,34 @@ abstract class BaseEmailHandler extends ReportHandler {
       }
       buffer.write('\n\n');
     }
+    _writeRawMap(buffer, 'Tags', report.tags);
+    _writeRawMap(buffer, 'Extras', report.extras);
+    _writeRawMap(buffer, 'User', report.user);
+    if (report.breadcrumbs.isNotEmpty) {
+      buffer.write('Breadcrumbs:\n');
+      for (final breadcrumb in report.breadcrumbs) {
+        buffer.write(
+          '${breadcrumb.timestamp.toIso8601String()} '
+          '${breadcrumb.message}\n',
+        );
+      }
+      buffer.write('\n\n');
+    }
     return buffer.toString();
+  }
+
+  void _writeRawMap(
+    StringBuffer buffer,
+    String title,
+    Map<String, dynamic> values,
+  ) {
+    if (values.isEmpty) {
+      return;
+    }
+    buffer.write('$title:\n');
+    for (final entry in values.entries) {
+      buffer.write('${entry.key}: ${entry.value}\n');
+    }
+    buffer.write('\n\n');
   }
 }

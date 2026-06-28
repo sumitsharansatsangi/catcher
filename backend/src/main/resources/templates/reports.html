@@ -11,14 +11,46 @@
 <title>Reports</title>
 </head>
 <body>
-	<!-- example content -->
 	<div class="mui-container">
+		<h2>Catcher reports</h2>
+		<form class="mui-form--inline" action="/reports" method="get">
+			<div class="mui-textfield">
+				<input type="text" name="query" placeholder="Search error or fingerprint" th:value="${query}">
+			</div>
+			<div class="mui-select">
+				<select name="severity">
+					<option value="">All severities</option>
+					<option value="fatal" th:selected="${severity == 'fatal'}">Fatal</option>
+					<option value="error" th:selected="${severity == 'error'}">Error</option>
+					<option value="warning" th:selected="${severity == 'warning'}">Warning</option>
+					<option value="info" th:selected="${severity == 'info'}">Info</option>
+				</select>
+			</div>
+			<div class="mui-textfield">
+				<input type="text" name="platform" placeholder="Platform" th:value="${platform}">
+			</div>
+			<div class="mui-select">
+				<select name="status">
+					<option value="">All statuses</option>
+					<option value="open" th:selected="${status == 'open'}">Open</option>
+					<option value="triaged" th:selected="${status == 'triaged'}">Triaged</option>
+					<option value="resolved" th:selected="${status == 'resolved'}">Resolved</option>
+				</select>
+			</div>
+			<button class="mui-btn mui-btn--primary" type="submit">Filter</button>
+		</form>
 		<table class="mui-table mui-table--bordered">
 			<thead>
 				<tr>
 					<th>Date</th>
+					<th>Status</th>
+					<th>Severity</th>
+					<th>Fingerprint</th>
+					<th>Platform</th>
 					<th>Application</th>
 					<th>Error</th>
+					<th>Tags</th>
+					<th>User</th>
 					<th>Stack trace</th>
 					<th>Device data</th>
 				</tr>
@@ -26,9 +58,15 @@
 			<tbody>
 				<tr th:each="reportLog : ${reportLogs}">
 					<td th:text="${reportLog.dateTime}"></td>
+					<td th:text="${reportLog.status}"></td>
+					<td th:text="${reportLog.severity}"></td>
+					<td th:text="${reportLog.fingerprint}"></td>
+					<td th:text="${reportLog.platformType}"></td>
 					<td
 						th:text="${reportLog.applicationParameters.get('packageName')} + ' ' + ${reportLog.applicationParameters.get('version')}"></td>
 					<td th:text="${reportLog.error}"></td>
+					<td th:utext="${reportLog.getTagsFormatted()}"></td>
+					<td th:utext="${reportLog.getUserFormatted()}"></td>
 					<td th:utext="${reportLog.getStackTraceFormatted()}"></td>
 					<td th:utext="${reportLog.getDeviceDataFormatted()}"></td>
 				</tr>

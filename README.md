@@ -66,11 +66,54 @@ import 'package:catcher/catcher.dart';
 [Explicit exception report mode map](#explicit-exception-report-mode-map)  
 [Error widget](#error-widget)  
 [Current config](#current-config)  
-[Update config](#update-config)  
+[Update config](#update-config)
 [Screenshots](#screenshots) 
+[Production features](#production-features)
 
 ## Platform support
 To check which features of Catcher are available in given platform visit this page: [Platform support](https://github.com/jhomlala/catcher/blob/master/platform_support.md)
+
+## Production features
+Catcher includes production-focused reporting tools:
+
+* Offline retry queue for failed handlers:
+```dart
+CatcherOptions(
+  SilentReportMode(),
+  [HttpHandler(HttpRequestType.post, Uri.parse("https://example.com/report"))],
+  offlineReportQueueOptions: OfflineReportQueueOptions(
+    enabled: true,
+    storagePath: "/tmp/catcher_queue.json",
+  ),
+);
+```
+
+* Breadcrumbs, user data, tags and extras:
+```dart
+Catcher.addBreadcrumb("Opened checkout", category: "navigation");
+Catcher.setUser(id: "42", email: "user@example.com");
+Catcher.setTag("feature", "checkout");
+Catcher.setExtra("cartId", "cart-123");
+```
+
+* Privacy redaction, severity, fingerprints and screenshot controls:
+```dart
+CatcherOptions(
+  SilentReportMode(),
+  [JsonFileHandler(File("/tmp/catcher.jsonl"))],
+  defaultSeverity: ReportSeverity.error,
+  redactionOptions: RedactionOptions.defaults(),
+  screenshotOptions: ScreenshotOptions(maxBytes: 500000),
+);
+```
+
+* Generic integrations:
+```dart
+WebhookHandler(
+  Uri.parse("https://example.com/webhook"),
+  bearerToken: "token",
+);
+```
 
 ## Basic example
 Basic example utilizes debug config with Dialog Report Mode and Console Handler and release config with Dialog Report Mode and Email Manual Handler.

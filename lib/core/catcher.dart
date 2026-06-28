@@ -4,16 +4,20 @@ import 'dart:isolate';
 
 import 'package:catcher/core/application_profile_manager.dart';
 import 'package:catcher/core/catcher_screenshot_manager.dart';
+import 'package:catcher/core/offline_report_queue.dart';
 import 'package:catcher/mode/report_mode_action_confirmed.dart';
 import 'package:catcher/model/application_profile.dart';
+import 'package:catcher/model/breadcrumb.dart';
 import 'package:catcher/model/catcher_options.dart';
 import 'package:catcher/model/localization_options.dart';
 import 'package:catcher/model/platform_type.dart';
 import 'package:catcher/model/report.dart';
 import 'package:catcher/model/report_handler.dart';
 import 'package:catcher/model/report_mode.dart';
+import 'package:catcher/model/report_severity.dart';
 import 'package:catcher/utils/catcher_error_widget.dart';
 import 'package:catcher/utils/catcher_logger.dart';
+import 'package:catcher/utils/report_redactor.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -48,8 +52,13 @@ class Catcher implements ReportModeAction {
   late CatcherOptions _currentConfig;
   late CatcherLogger _logger;
   late CatcherScreenshotManager screenshotManager;
+  late OfflineReportQueue _offlineReportQueue;
   final Map<String, dynamic> _deviceParameters = <String, dynamic>{};
   final Map<String, dynamic> _applicationParameters = <String, dynamic>{};
+  final Map<String, dynamic> _tags = <String, dynamic>{};
+  final Map<String, dynamic> _extras = <String, dynamic>{};
+  final Map<String, dynamic> _user = <String, dynamic>{};
+  final List<Breadcrumb> _breadcrumbs = <Breadcrumb>[];
   final List<Report> _cachedReports = [];
   final Map<DateTime, String> _reportsOccurrenceMap = {};
   LocalizationOptions? _localizationOptions;
@@ -81,6 +90,7 @@ class Catcher implements ReportModeAction {
     _configureNavigatorKey(navigatorKey);
     _setupCurrentConfig();
     _configureLogger();
+    _setupOfflineQueue();
     unawaited(_setupErrorHooks());
     _setupScreenshotManager();
     _setupReportModeActionInReportMode();
@@ -157,7 +167,18 @@ class Catcher implements ReportModeAction {
     _setupScreenshotManager();
     _setupReportModeActionInReportMode();
     _configureLogger();
+    _setupOfflineQueue();
     _localizationOptions = null;
+  }
+
+  void _setupOfflineQueue() {
+    _offlineReportQueue = OfflineReportQueue(
+      _currentConfig.offlineReportQueueOptions,
+      _logger,
+    );
+    unawaited(
+      _offlineReportQueue.flush(_currentConfig.handlers, _getContext()),
+    );
   }
 
   void _setupReportModeActionInReportMode() {
@@ -537,18 +558,80 @@ class Catcher implements ReportModeAction {
 
   /// Report checked error (error caught in try-catch block). Catcher will treat
   /// this as normal exception and pass it to handlers.
-  static void reportCheckedError(dynamic error, dynamic stackTrace) {
+  static void reportCheckedError(
+    dynamic error,
+    dynamic stackTrace, {
+    ReportSeverity severity = ReportSeverity.error,
+  }) {
     dynamic errorValue = error;
     dynamic stackTraceValue = stackTrace;
     errorValue ??= 'undefined error';
     stackTraceValue ??= StackTrace.current;
-    unawaited(_instance._reportError(error, stackTrace));
+    unawaited(_instance._reportError(error, stackTrace, severity: severity));
+  }
+
+  static void addBreadcrumb(
+    String message, {
+    String? category,
+    Map<String, dynamic> data = const <String, dynamic>{},
+  }) {
+    _instance._breadcrumbs.add(
+      Breadcrumb(message, category: category, data: data),
+    );
+    if (_instance._breadcrumbs.length > 100) {
+      _instance._breadcrumbs.removeAt(0);
+    }
+  }
+
+  static void clearBreadcrumbs() {
+    _instance._breadcrumbs.clear();
+  }
+
+  static void setTag(String key, dynamic value) {
+    _instance._tags[key] = value;
+  }
+
+  static void removeTag(String key) {
+    _instance._tags.remove(key);
+  }
+
+  static void setExtra(String key, dynamic value) {
+    _instance._extras[key] = value;
+  }
+
+  static void removeExtra(String key) {
+    _instance._extras.remove(key);
+  }
+
+  static void setUser({
+    String? id,
+    String? email,
+    String? username,
+    Map<String, dynamic> data = const <String, dynamic>{},
+  }) {
+    _instance._user
+      ..clear()
+      ..addAll(data);
+    if (id != null) {
+      _instance._user['id'] = id;
+    }
+    if (email != null) {
+      _instance._user['email'] = email;
+    }
+    if (username != null) {
+      _instance._user['username'] = username;
+    }
+  }
+
+  static void clearUser() {
+    _instance._user.clear();
   }
 
   Future<void> _reportError(
     dynamic error,
     dynamic stackTrace, {
     FlutterErrorDetails? errorDetails,
+    ReportSeverity? severity,
   }) async {
     if (errorDetails?.silent ?? false) {
       _logger.info(
@@ -565,20 +648,44 @@ class Catcher implements ReportModeAction {
     _cleanPastReportsOccurrences();
 
     File? screenshot;
-    if (!ApplicationProfileManager.isWeb()) {
-      screenshot = await screenshotManager.captureAndSave();
+    final screenshotOptions = _currentConfig.screenshotOptions;
+    if (!ApplicationProfileManager.isWeb() && screenshotOptions.enabled) {
+      screenshot = await screenshotManager.captureAndSave(
+        pixelRatio: screenshotOptions.pixelRatio,
+        delay: screenshotOptions.delay,
+        maxBytes: screenshotOptions.maxBytes,
+        redactedAreas: screenshotOptions.redactedAreas,
+      );
     }
 
+    final redactor = ReportRedactor(_currentConfig.redactionOptions);
+    final redactedError = redactor.redact(error).toString();
+    final redactedStackTrace = redactor.redact(stackTrace).toString();
+
     final report = Report(
-      error,
-      stackTrace,
+      redactedError,
+      redactedStackTrace,
       DateTime.now(),
-      _deviceParameters,
-      _applicationParameters,
-      _currentConfig.customParameters,
+      redactor.redactMap(_deviceParameters),
+      redactor.redactMap(_applicationParameters),
+      redactor.redactMap(_currentConfig.customParameters),
       errorDetails,
       _getPlatformType(),
       screenshot,
+      severity: severity ?? _currentConfig.defaultSeverity,
+      breadcrumbs: _breadcrumbs
+          .map(
+            (breadcrumb) => Breadcrumb(
+              redactor.redact(breadcrumb.message).toString(),
+              timestamp: breadcrumb.timestamp,
+              category: breadcrumb.category,
+              data: redactor.redactMap(breadcrumb.data),
+            ),
+          )
+          .toList(),
+      tags: redactor.redactMap(_tags),
+      extras: redactor.redactMap(_extras),
+      user: redactor.redactMap(_user),
     );
 
     if (_isReportInReportsOccurrencesMap(report)) {
@@ -709,8 +816,15 @@ class Catcher implements ReportModeAction {
             _logger.info('${report.runtimeType} result: $result');
             if (!result) {
               _logger.warning('$reportHandler failed to report error');
+              unawaited(_offlineReportQueue.enqueue(report, reportHandler));
             } else {
               _cachedReports.remove(report);
+              unawaited(
+                _offlineReportQueue.flush(
+                  _currentConfig.handlers,
+                  _getContext(),
+                ),
+              );
             }
           })
           .timeout(
@@ -823,18 +937,14 @@ class Catcher implements ReportModeAction {
 
   ///Check whether reports occurence map contains given report.
   bool _isReportInReportsOccurrencesMap(Report report) {
-    if (report.error != null) {
-      return _reportsOccurrenceMap.containsValue(report.error.toString());
-    } else {
-      return false;
-    }
+    return _reportsOccurrenceMap.containsValue(report.fingerprint);
   }
 
   ///Add report in reports occurences map. Report will be added only when
   ///error is not null and report occurence timeout is greater than 0.
   void _addReportInReportsOccurencesMap(Report report) {
-    if (report.error != null && _currentConfig.reportOccurrenceTimeout > 0) {
-      _reportsOccurrenceMap[DateTime.now()] = report.error.toString();
+    if (_currentConfig.reportOccurrenceTimeout > 0) {
+      _reportsOccurrenceMap[DateTime.now()] = report.fingerprint;
     }
   }
 

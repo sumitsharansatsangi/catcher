@@ -2,9 +2,13 @@ import 'package:catcher/handlers/console_handler.dart';
 import 'package:catcher/mode/dialog_report_mode.dart';
 import 'package:catcher/mode/silent_report_mode.dart';
 import 'package:catcher/model/localization_options.dart';
+import 'package:catcher/model/offline_report_queue_options.dart';
+import 'package:catcher/model/redaction_options.dart';
 import 'package:catcher/model/report.dart';
 import 'package:catcher/model/report_handler.dart';
 import 'package:catcher/model/report_mode.dart';
+import 'package:catcher/model/report_severity.dart';
+import 'package:catcher/model/screenshot_options.dart';
 import 'package:catcher/utils/catcher_logger.dart';
 
 class CatcherOptions {
@@ -54,6 +58,18 @@ class CatcherOptions {
   ///Logger instance.
   final CatcherLogger? logger;
 
+  ///Default severity used for automatically captured reports.
+  final ReportSeverity defaultSeverity;
+
+  ///Rules used to remove sensitive values from reports.
+  final RedactionOptions redactionOptions;
+
+  ///Screenshot capture settings.
+  final ScreenshotOptions screenshotOptions;
+
+  ///Local retry queue settings for failed handlers.
+  final OfflineReportQueueOptions offlineReportQueueOptions;
+
   /// Builds catcher options instance
   CatcherOptions(
     this.reportMode,
@@ -69,6 +85,10 @@ class CatcherOptions {
     this.filterFunction,
     this.reportOccurrenceTimeout = 3000,
     this.logger,
+    this.defaultSeverity = ReportSeverity.error,
+    this.redactionOptions = const RedactionOptions(),
+    this.screenshotOptions = const ScreenshotOptions(),
+    this.offlineReportQueueOptions = const OfflineReportQueueOptions(),
   });
 
   /// Builds default catcher options release instance
@@ -85,7 +105,11 @@ class CatcherOptions {
       excludedParameters = const [],
       filterFunction = null,
       reportOccurrenceTimeout = 3000,
-      logger = CatcherLogger();
+      logger = CatcherLogger(),
+      defaultSeverity = ReportSeverity.error,
+      redactionOptions = const RedactionOptions(),
+      screenshotOptions = const ScreenshotOptions(),
+      offlineReportQueueOptions = const OfflineReportQueueOptions();
 
   /// Builds default catcher options debug instance
   CatcherOptions.getDefaultDebugOptions()
@@ -101,7 +125,11 @@ class CatcherOptions {
       excludedParameters = const [],
       filterFunction = null,
       reportOccurrenceTimeout = 3000,
-      logger = CatcherLogger();
+      logger = CatcherLogger(),
+      defaultSeverity = ReportSeverity.error,
+      redactionOptions = const RedactionOptions(),
+      screenshotOptions = const ScreenshotOptions(),
+      offlineReportQueueOptions = const OfflineReportQueueOptions();
 
   /// Builds default catcher options profile instance
   CatcherOptions.getDefaultProfileOptions()
@@ -117,5 +145,9 @@ class CatcherOptions {
       excludedParameters = const [],
       filterFunction = null,
       reportOccurrenceTimeout = 3000,
-      logger = CatcherLogger();
+      logger = CatcherLogger(),
+      defaultSeverity = ReportSeverity.error,
+      redactionOptions = const RedactionOptions(),
+      screenshotOptions = const ScreenshotOptions(),
+      offlineReportQueueOptions = const OfflineReportQueueOptions();
 }

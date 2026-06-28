@@ -72,6 +72,8 @@ class SlackHandler extends ReportHandler {
 
   String _buildMessage(Report report) {
     final stringBuffer = StringBuffer()
+      ..write('*Severity:* `${report.severity.name}`\n')
+      ..write('*Fingerprint:* `${report.fingerprint}`\n')
       ..write('*Error:* ```${report.error}```\n');
     if (enableStackTrace) {
       stringBuffer.write('*Stack trace:* ```${report.stackTrace}```\n');
@@ -97,6 +99,22 @@ class SlackHandler extends ReportHandler {
       stringBuffer.write('*Custom parameters:* ```');
       for (final entry in report.customParameters.entries) {
         stringBuffer.write('${entry.key}: ${entry.value}\n');
+      }
+      stringBuffer.write('```\n');
+    }
+    if (report.tags.isNotEmpty) {
+      stringBuffer.write('*Tags:* `${report.tags}`\n');
+    }
+    if (report.user.isNotEmpty) {
+      stringBuffer.write('*User:* `${report.user}`\n');
+    }
+    if (report.breadcrumbs.isNotEmpty) {
+      stringBuffer.write('*Breadcrumbs:* ```');
+      for (final breadcrumb in report.breadcrumbs.take(10)) {
+        stringBuffer.write(
+          '${breadcrumb.timestamp.toIso8601String()} '
+          '${breadcrumb.message}\n',
+        );
       }
       stringBuffer.write('```\n');
     }

@@ -27,6 +27,8 @@ class CatcherScreenshotManager {
   Future<File?> captureAndSave({
     double? pixelRatio,
     Duration delay = const Duration(milliseconds: 20),
+    int? maxBytes,
+    List<ui.Rect> redactedAreas = const <ui.Rect>[],
   }) async {
     try {
       if (_path?.isEmpty ?? false) {
@@ -35,9 +37,16 @@ class CatcherScreenshotManager {
       final content = await _capture(
         pixelRatio: pixelRatio,
         delay: delay,
+        redactedAreas: redactedAreas,
       );
 
       if (content != null) {
+        if (maxBytes != null && content.lengthInBytes > maxBytes) {
+          _logger.warning(
+            'Screenshot skipped because it exceeds maxBytes: $maxBytes',
+          );
+          return null;
+        }
         return saveFile(content);
       }
     } on Object catch (exception) {
@@ -56,6 +65,7 @@ class CatcherScreenshotManager {
   Future<Uint8List?> _capture({
     double? pixelRatio,
     Duration delay = const Duration(milliseconds: 20),
+    List<ui.Rect> redactedAreas = const <ui.Rect>[],
   }) {
     //Delay is required. See Issue https://github.com/flutter/flutter/issues/22308
     return Future.delayed(delay, () async {
@@ -64,10 +74,16 @@ class CatcherScreenshotManager {
           delay: Duration.zero,
           pixelRatio: pixelRatio,
         );
-        final byteData = await image?.toByteData(
+        final outputImage = redactedAreas.isEmpty || image == null
+            ? image
+            : await _redactImage(image, redactedAreas);
+        final byteData = await outputImage?.toByteData(
           format: ui.ImageByteFormat.png,
         );
         image?.dispose();
+        if (outputImage != image) {
+          outputImage?.dispose();
+        }
 
         final pngBytes = byteData?.buffer.asUint8List();
 
@@ -89,8 +105,6 @@ class CatcherScreenshotManager {
         final findRenderObject = _containerKey.currentContext
             ?.findRenderObject();
 
-        print(containerKey.currentContext);
-        print(_containerKey.currentContext?.findRenderObject());
         if (findRenderObject == null) {
           return null;
         }
@@ -111,6 +125,24 @@ class CatcherScreenshotManager {
       }
       return null;
     });
+  }
+
+  Future<ui.Image> _redactImage(
+    ui.Image image,
+    List<ui.Rect> redactedAreas,
+  ) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = ui.Canvas(recorder);
+    final paint = ui.Paint();
+    canvas.drawImage(image, ui.Offset.zero, paint);
+    final redactionPaint = ui.Paint()..color = const ui.Color(0xFF000000);
+    for (final area in redactedAreas) {
+      canvas.drawRect(area, redactionPaint);
+    }
+    final picture = recorder.endRecording();
+    final redactedImage = await picture.toImage(image.width, image.height);
+    picture.dispose();
+    return redactedImage;
   }
 
   ///Update screenshots directory path.

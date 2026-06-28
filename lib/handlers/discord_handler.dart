@@ -78,6 +78,8 @@ class DiscordHandler extends ReportHandler {
 
   String _buildMessage(Report report) {
     final stringBuffer = StringBuffer()
+      ..write('**Severity:** ${report.severity.name}\n')
+      ..write('**Fingerprint:** ${report.fingerprint}\n\n')
       ..write('**Error:**\n${report.error}\n\n');
     if (enableStackTrace) {
       stringBuffer.write('**Stack trace:**\n${report.stackTrace}\n\n');
@@ -103,6 +105,22 @@ class DiscordHandler extends ReportHandler {
       stringBuffer.write('**Custom parameters:**\n');
       for (final entry in report.customParameters.entries) {
         stringBuffer.write('${entry.key}: ${entry.value}\n');
+      }
+      stringBuffer.write('\n\n');
+    }
+    if (report.tags.isNotEmpty) {
+      stringBuffer.write('**Tags:**\n${report.tags}\n\n');
+    }
+    if (report.user.isNotEmpty) {
+      stringBuffer.write('**User:**\n${report.user}\n\n');
+    }
+    if (report.breadcrumbs.isNotEmpty) {
+      stringBuffer.write('**Breadcrumbs:**\n');
+      for (final breadcrumb in report.breadcrumbs.take(10)) {
+        stringBuffer.write(
+          '${breadcrumb.timestamp.toIso8601String()} '
+          '${breadcrumb.message}\n',
+        );
       }
       stringBuffer.write('\n\n');
     }
